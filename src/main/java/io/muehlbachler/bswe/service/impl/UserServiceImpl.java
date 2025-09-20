@@ -18,33 +18,35 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-  private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
-  @Autowired
-  private final UserRepository userRepository;
+    @Autowired
+    private final UserRepository userRepository;
 
-  @Override
-  public boolean exists(final String userId) {
-    // FIXME: implement
-    return true;
-  }
+    @Override
+    public boolean exists(final String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return false;
+        }
 
-  @Override
-  public List<User> list() {
-    final List<User> result = new ArrayList<>();
-    // FIXME: implement
-    return result;
-  }
+        return userRepository.existsById(userId);
+    }
 
-  @Override
-  public User save(final User user) throws ApiException {
-    // FIXME: implement
-    return user;
-  }
+    @Override
+    public List<User> list() {
+        final List<User> result = new ArrayList<>();
+        userRepository.findAll().forEach(result::add);
+        return result;
+    }
 
-  @Override
-  public boolean delete(final String userId) {
-    // FIXME: implement
-    return true;
-  }
+    @Override
+    public User save(final User user) throws ApiException {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public boolean delete(final String userId) {
+        // FIXME: implement
+        return true;
+    }
 }
